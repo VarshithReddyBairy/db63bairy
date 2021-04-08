@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  - let hotels = [{roomType:"Delux", price: 100, location:"5 th Floor"},{roomType:"Suite", price: 200, location:"3 rd Floor"},{roomType:"Super Delux", price: 400, location:"1 st floor"}]
+  - let hotels=results 
   div(class="container-fluid mt-3")
   div(class="row")
     each hotel,index in hotels
