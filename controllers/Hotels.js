@@ -43,13 +43,25 @@ exports.Hotels_create_post = async function(req, res) {
     }
     };
 
-exports.Hotels_delete = function(req, res) {
-res.send('NOT IMPLEMENTED: Hotels delete DELETE ' + req.params.id);
-};
-
-// exports.Hotels_update_put = function(req, res) {
-// res.send('NOT IMPLEMENTED: Hotels update PUT' + req.params.id);
+// exports.Hotels_delete = function(req, res) {
+// res.send('NOT IMPLEMENTED: Hotels delete DELETE ' + req.params.id);
 // };
+// Handle Costume delete on DELETE.
+exports.Hotels_delete = async function(req, res) 
+{  
+    console.log("delete "  + req.params.id) 
+       try {      
+           result = await Hotels.findByIdAndDelete( req.params.id)    
+               console.log("Removed " + result)    
+                   res.send(result)   
+             } catch (err) {    
+                   res.status(500)    
+                       res.send(`{"error": Error deleting ${err}}`); 
+   }};
+
+exports.Hotels_update_put = function(req, res) {
+res.send('NOT IMPLEMENTED: Hotels update PUT' + req.params.id);
+};
 
 exports.Hotels_update_put = async function(req, res) {  
       console.log(`update on id ${req.params.id} with body ${JSON.stringify(req.body)}`)  
