@@ -31,7 +31,7 @@ exports.Hotels_create_post = async function(req, res) {
     console.log(req.body)
     let document = new Hotels();
     
-    document.roomType = req.body.costumetype;
+    document.roomType = req.body.roomType;
     document.price = req.body.price;
     document.location = req.body.location;
     try{
@@ -59,9 +59,9 @@ exports.Hotels_delete = async function(req, res)
                        res.send(`{"error": Error deleting ${err}}`); 
    }};
 
-exports.Hotels_update_put = function(req, res) {
-res.send('NOT IMPLEMENTED: Hotels update PUT' + req.params.id);
-};
+// exports.Hotels_update_put = function(req, res) {
+// res.send('NOT IMPLEMENTED: Hotels update PUT' + req.params.id);
+// };
 
 exports.Hotels_update_put = async function(req, res) {  
       console.log(`update on id ${req.params.id} with body ${JSON.stringify(req.body)}`)  
@@ -83,7 +83,18 @@ exports.Hotels_update_put = async function(req, res) {
                              res.send(`{"error": ${err}: Update for id ${req.params.id} failed`); 
                                }
                             };
-
+// Handle a show one view with id specified by query
+exports.Hotels_view_one_Page = async function(req, res) 
+{  
+    console.log("single view for id "  + req.query.id)  
+      try{       
+         result = await Hotels.findById( req.query.id)   
+              res.render('HotelDetail', { title: 'Hotel Detail', toShow: result });  
+              }   
+               catch(err){   
+                      res.status(500)    
+                          res.send(`{'error': '${err}'}`); 
+                           }};
 
 exports.Hotels_view_all_Page = async function(req, res) {
     try{
@@ -93,4 +104,43 @@ exports.Hotels_view_all_Page = async function(req, res) {
     catch(err){
     res.error(500,`{"error": ${err}}`);
     }
+
 };
+
+// Handle building the view for creating a costume.
+// No body, no in path parameter, no query.
+// Does not need to be async
+exports.Hotels_create_Page =  function(req, res) {  
+    console.log("create view")  
+      try{       
+         res.render('Hotelcreate', { title: 'Hotels Create'});    }  
+           catch(err){      
+               res.status(500)   
+                    res.send(`{'error': '${err}'}`); 
+                     }};
+
+
+// Handle building the view for updating a costume.
+// query provides the id
+exports.Hotels_update_Page =  async function(req, res) 
+{  
+    console.log("update view for item "+req.query.id)  
+      try{     
+           let result = await Hotels.findById(req.query.id)   
+                res.render('Hotelupdate', { title: 'Hotels Update', toShow: result });  
+          }   
+           catch(err){     
+                res.status(500)   
+                     res.send(`{'error': '${err}'}`);  
+  }};
+  // Handle a delete one view with id from query
+  exports.Hotels_delete_Page = async function(req, res) {  
+      console.log("Delete view for id "  + req.query.id)  
+        try{     
+             result = await Hotels.findById(req.query.id)     
+                res.render('Hoteldelete', { title: 'Hotel Delete', toShow: result });  
+                }    
+                catch(err){       
+                   res.status(500)    
+                       res.send(`{'error': '${err}'}`); 
+       }};
