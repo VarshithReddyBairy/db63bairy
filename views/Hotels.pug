@@ -6,9 +6,13 @@ block content
   div(class="container-fluid mt-3")
   div(class="row")
     each hotel,index in hotels
-        div(class="col-sm-4"   onclick=`buy(${index})`) #{hotel.roomType} - #{hotel.price} - #{hotel.location}
+      - let destination = `dispatch(\"/Hotels/update?id=${hotel._id}\")`
+        div(class="row-sm-2",class="m-1") #{hotel.roomType} - #{hotel.price} - #{hotel.location}
+          button.btn(class="btn-primary ml-1", onclick= destination) Update
   script.
-     
+      function dispatch(path){
+      window.location.href=path
+      }
       function buy(itemNo)
       {
         alert(`You purchased Item ${itemNo+1}`)
